@@ -1,0 +1,57 @@
+.expense-card{
+    border:2px solid black;
+    border-radius:4px;
+    padding:15px 20px;
+    height:120px;
+    width:400px;
+    box-sizing: border-box;
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:10px;
+    background-color:rgb(252, 236, 198) ;
+    box-shadow: 10px 10px 5px rgb(255, 255, 171);
+}
+.expense-card:hover{
+    transform: scale(1.02);
+    box-shadow: 12px 12px 8px rgb(255, 255, 183);
+    background-color: rgb(255, 239, 209);
+    transition: all 0.3s ease;
+}
+.edit{
+    display:flex;
+    font-size:18px;
+    text-decoration:underline;
+}
+.edit-buttons{
+    display:flex;
+    gap:8px;
+    justify-content: flex-end;
+}
+button{
+    border:none;
+    background-color: transparent;
+    cursor:pointer;
+}
+button:hover{
+    transform:scale(1.15);
+    transition: all 0.3s ease;
+}
+.details{
+    font-size:20px;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+    color:hsl(30, 91%, 48%);
+}
+#money{
+    grid-column:2/3;     
+    grid-row: 2/4;
+    display:flex;
+    align-items: center;
+    font-size:30px;
+    font-weight:bold;
+    font-family:Michroma;
+}
+.amt{
+    font-size:16px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+}

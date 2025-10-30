@@ -1,0 +1,27 @@
+.add-exp{
+    border:2px solid;
+    height:50px;
+    width:400px;
+    display:flex;
+    align-items: center;
+    gap:18px;
+    padding:10px;
+}
+#money{
+    width:100px;
+    height:24px;
+    text-align:center;
+    font-size: 16px;
+}
+#money::-webkit-outer-spin-button,    /* to remove the up down counter from the input */
+#money::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#category{
+    height:28px;
+}
+#notes{
+    height:24px;
+    text-align: center;
+}
