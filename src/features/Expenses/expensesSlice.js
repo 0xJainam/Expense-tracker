@@ -19,7 +19,7 @@ export const expenseSlice = createSlice({
         id: nanoid(),
         date: Date.now(),
         text: action.payload.text,
-        expense: Number(action.payload.amount),
+        expense: Number(action.payload.expense),
         category: action.payload.category,
       };
       state.expenses.push(expenseObj);
@@ -29,12 +29,22 @@ export const expenseSlice = createSlice({
     // ✅ Edit expense
     // Todo: if expense is changed then update totalExpense
     editExpense: (state, action) => {
-      const { id, ...updates } = action.payload;
-      const expense = state.expenses.find(e => e.id === id); // ✅ fix here
-      if (expense) {
-        Object.assign(expense, updates); // Immer handles immutability
-      }
-    },
+  const { id, text, category, expense } = action.payload;
+  const existing = state.expenses.find((exp) => exp.id === id);
+
+  if (existing) {
+    existing.text = text;
+    existing.category = category;
+    existing.expense = expense;
+  }
+
+  state.totalExpense = state.expenses.reduce(
+    (total, exp) => total + exp.expense,
+    0
+  );
+}
+
+,
 
     deleteExpense: (state, action) => {
 

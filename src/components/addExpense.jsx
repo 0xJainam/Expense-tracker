@@ -1,64 +1,84 @@
-import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {addExpense} from '../features/Expenses/expenseSlice'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "./add-exp.css";
+import { addExpense, editExpense } from "../features/Expenses/expensesSlice";
 
-//use the class names in jsx
+function AddExpense({ editingExpenseId, setEditingExpenseId }) {
+  const [text, setText] = useState("");
+  const [expense, setExpense] = useState("");
+  const [category, setCategory] = useState("");
 
-function AddExpense(){
+  const expenses = useSelector((state) => state.expense.expenses);
+  const dispatch = useDispatch();
 
-    const [text, setText] = React.useState("")
-    const [expense,setExpense] = React.useState(0);
-    const [category,setCategory] = React.useState("");
-    const dispatch = useDispatch()
+  // Load data into form when editingExpenseId changes
+  useEffect(() => {
+    if (editingExpenseId) {
+      const item = expenses.find((exp) => exp.id === editingExpenseId);
+      if (item) {
+        setText(item.text);
+        setExpense(item.expense);
+        setCategory(item.category);
+      }
+    } else {
+      setText("");
+      setExpense("");
+      setCategory("");
+    }
+  }, [editingExpenseId, expenses]);
 
-    const addExpenseHandler = (e) => {
-        e.preventDefault()
-        dispatch(addExpense({text,expense,category}))
-        
-        setText('')
-        setExpense(0);
-        setCategory('');
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if (editingExpenseId) {
+      dispatch(editExpense({ id: editingExpenseId, text, expense: Number(expense), category }));
+      setEditingExpenseId(null); // exit edit mode
+    } else {
+      dispatch(addExpense({ text, expense: Number(expense), category }));
+    }
 
+    setText("");
+    setExpense("");
+    setCategory("");
+  };
 
-    return (
-        <form onSubmit={addExpenseHandler}>
-            <input 
-            type="text"
-            
-            value = {text}
-            onChange={(e)=>setText(e.target.value)}
-            placeholder='Enter Your expense'
-            />
-            <input
-            type="number"
-            required
-            value = {Number(expense)}
-            onChange={(e)=>setExpense(e.target.value)}
-            placeholder='0'
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="add-exp">
+        <input
+          type="text"
+          id="notes"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Enter Your expense"
+          required
+        />
 
-            />
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        >
+          <option value="">Select an option</option>
+          <option value="food">Food</option>
+          <option value="travel">Travel</option>
+          <option value="shopping">Shopping</option>
+          <option value="others">Others</option>
+        </select>
 
-            <select 
-            value={category}
-            required
-            onChange={(e)=> setCategory(e.target.value)}>
-                <option value="">Select an option</option>
-                <option value="food">Food</option>
-                <option value="travel">Travel</option>
-                <option value="shoppoing">Shopping</option>
-                <option value="others">Others</option>
-            </select>
+        <input
+          type="number"
+          id="money"
+          value={expense}
+          onChange={(e) => setExpense(e.target.value)}
+          required
+        />
+      </div>
 
-
-
-            <button type="submit">Add</button>
-            
-            
-        </form>
-
-    )
+      <button type="submit">{editingExpenseId ? "Update" : "Add"}</button>
+    </form>
+  );
 }
 
 export default AddExpense;
